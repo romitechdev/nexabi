@@ -1,0 +1,31 @@
+.env
+.env.*
+backend/.env
+backend/.env.*
+frontend/.env
+frontend/.env.*
+
+# Python
+backend/.venv/
+backend/venv/
+backend/env/
+backend/__pycache__/
+backend/*.pyc
+backend/.pytest_cache/
+backend/.mypy_cache/
+backend/.ruff_cache/
+backend/.coverage
+backend/coverage.xml
+backend/build/
+backend/dist/
+backend/*.egg-info/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+
+# OS / editor
+.DS_Store
+*.log

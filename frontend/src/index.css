@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-base: #0f1117;
+  --bg-card: #1a1d27;
+  --border: #2a2d3a;
+  --accent: #6366f1;
+  --accent-hover: #4f46e5;
+  --violet: #8b5cf6;
+  --success: #10b981;
+  --danger: #ef4444;
+  --text-primary: #f1f5f9;
+  --text-muted: #94a3b8;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar kustom */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-base);
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2d3a;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3d4a;
+}
+
+/* Markdown Styling untuk ReactMarkdown */
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+  color: #f1f5f9;
+  margin: 1rem 0 0.5rem;
+  font-weight: 600;
+}
+.markdown-content h2 { font-size: 1.125rem; }
+.markdown-content h3 { font-size: 1rem; }
+.markdown-content p { color: #cbd5e1; line-height: 1.7; margin-bottom: 0.75rem; }
+.markdown-content ul, .markdown-content ol {
+  margin: 0.5rem 0 0.75rem 1.25rem;
+  color: #cbd5e1;
+  line-height: 1.7;
+}
+.markdown-content strong { color: #f1f5f9; }
+.markdown-content code {
+  background: #2a2d3a;
+  color: #818cf8;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+.markdown-content blockquote {
+  border-left: 3px solid #6366f1;
+  padding-left: 1rem;
+  color: #94a3b8;
+  margin: 0.75rem 0;
+}
