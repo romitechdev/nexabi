@@ -64,6 +64,7 @@ CORS_ORIGINS=http://localhost:3000,http://localhost:5173
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_DB=nexabi_db
+CLOUDFLARE_TUNNEL_TOKEN=
 ```
 
 ### Keterangan
@@ -73,6 +74,7 @@ POSTGRES_DB=nexabi_db
 - `CSV_FILE_PATH`: lokasi file CSV untuk seeding data awal
 - `CORS_ORIGINS`: daftar origin frontend yang diizinkan, dipisah koma
 - `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`: dipakai oleh service PostgreSQL di Docker Compose
+- `CLOUDFLARE_TUNNEL_TOKEN`: token tunnel Cloudflare kalau kamu mau publish backend lewat tunnel di stack yang sama
 
 ## Instalasi Lokal
 
@@ -129,6 +131,34 @@ docker compose up --build
 ```bash
 docker compose down
 ```
+
+## Auto Start Saat VM Boot
+
+Kalau VM mati karena listrik padam, kamu bisa bikin satu stack Docker yang isinya database, API, dan Cloudflare Tunnel otomatis naik lagi saat mesin hidup dengan systemd.
+
+### 1. Pastikan Docker aktif saat boot
+
+```bash
+sudo systemctl enable docker
+```
+
+### 2. Pasang unit systemd backend
+
+Copy file [nexabi-backend.service](nexabi-backend.service) ke `/etc/systemd/system/`:
+
+```bash
+sudo cp nexabi-backend.service /etc/systemd/system/nexabi-backend.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now nexabi-backend
+```
+
+### 3. Cek status
+
+```bash
+sudo systemctl status nexabi-backend
+```
+
+Kalau kamu memakai Cloudflare Tunnel, isi `CLOUDFLARE_TUNNEL_TOKEN` di `.env`, lalu tunnel akan ikut hidup sebagai container di stack yang sama.
 
 ## API Documentation
 

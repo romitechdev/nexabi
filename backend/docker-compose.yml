@@ -1,6 +1,7 @@
 services:
   db:
     image: postgres:15
+    restart: unless-stopped
     env_file:
       - .env
     volumes:
@@ -8,12 +9,24 @@ services:
 
   web:
     build: .
+    restart: unless-stopped
     ports:
       - "5000:5000"
     depends_on:
       - db
     env_file:
       - .env
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    depends_on:
+      - web
+    env_file:
+      - .env
+    entrypoint: ["/bin/sh", "-c"]
+    command: >-
+      exec cloudflared tunnel run --token "$$CLOUDFLARE_TUNNEL_TOKEN"
 
 volumes:
   postgres_data:
