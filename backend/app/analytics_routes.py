@@ -1,13 +1,114 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-import requests
 
 from app.database import get_db
 from app.models import CustomerCluster, User, AssociationRule
 from app.auth import get_current_user
+from app.ai_helper import call_ai
 
 router = APIRouter(prefix="/api/analytics", tags=["Analytics Extended"])
+
+
+# ─── SALES PERFORMANCE ────────────────────────────────────────────────────────
+@router.get("/sales-performance")
+def get_sales_performance(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Menghitung agregasi performa penjualan dari data RFM per pelanggan.
+    Monetary = total revenue per pelanggan (proxy sales).
+    """
+    # ── Total & avg metrics ──
+    total_customers = db.query(CustomerCluster).count()
+    total_revenue   = db.query(func.sum(CustomerCluster.monetary)).scalar() or 0
+    avg_order_value = db.query(func.avg(CustomerCluster.monetary)).scalar() or 0
+    total_orders    = db.query(func.sum(CustomerCluster.frequency)).scalar() or 0
+    avg_frequency   = db.query(func.avg(CustomerCluster.frequency)).scalar() or 0
+
+    # ── Revenue per segment ──
+    segments = db.query(CustomerCluster.segment).distinct().all()
+    revenue_by_segment = []
+    for (seg,) in segments:
+        rev  = db.query(func.sum(CustomerCluster.monetary)).filter(CustomerCluster.segment == seg).scalar() or 0
+        cnt  = db.query(CustomerCluster).filter(CustomerCluster.segment == seg).count()
+        freq = db.query(func.sum(CustomerCluster.frequency)).filter(CustomerCluster.segment == seg).scalar() or 0
+        revenue_by_segment.append({
+            "segment": seg,
+            "total_revenue": round(rev, 2),
+            "customer_count": cnt,
+            "total_orders": int(freq),
+            "avg_order_value": round(rev / cnt, 2) if cnt else 0,
+            "revenue_pct": round(rev / total_revenue * 100, 1) if total_revenue else 0,
+        })
+    revenue_by_segment.sort(key=lambda x: x["total_revenue"], reverse=True)
+
+    # ── Revenue distribution buckets (histogram proxy) ──
+    buckets = [
+        (0,     2000,   "< 2K"),
+        (2000,  5000,   "2K–5K"),
+        (5000,  10000,  "5K–10K"),
+        (10000, 20000,  "10K–20K"),
+        (20000, 99999,  "> 20K"),
+    ]
+    distribution = []
+    for lo, hi, label in buckets:
+        count = db.query(CustomerCluster).filter(
+            CustomerCluster.monetary >= lo,
+            CustomerCluster.monetary < hi
+        ).count()
+        distribution.append({"range": label, "count": count})
+
+    # ── Top segments by loyalty (loyal = cluster 2) ──
+    loyal_by_seg = []
+    for (seg,) in segments:
+        total_seg = db.query(CustomerCluster).filter(CustomerCluster.segment == seg).count()
+        loyal_seg = db.query(CustomerCluster).filter(
+            CustomerCluster.segment == seg,
+            CustomerCluster.cluster == 2
+        ).count()
+        avg_m = db.query(func.avg(CustomerCluster.monetary)).filter(CustomerCluster.segment == seg).scalar() or 0
+        avg_f = db.query(func.avg(CustomerCluster.frequency)).filter(CustomerCluster.segment == seg).scalar() or 0
+        loyal_by_seg.append({
+            "segment": seg,
+            "loyal_count": loyal_seg,
+            "total": total_seg,
+            "pct_loyal": round(loyal_seg / total_seg * 100, 1) if total_seg else 0,
+            "avg_monetary": round(avg_m, 2),
+            "avg_frequency": round(avg_f, 1),
+        })
+    loyal_by_seg.sort(key=lambda x: x["avg_monetary"], reverse=True)
+
+    # ── Recency buckets (customer activity) ──
+    recency_buckets = [
+        (0,   30,  "0–30 hari"),
+        (30,  90,  "31–90 hari"),
+        (90,  180, "91–180 hari"),
+        (180, 365, "181–365 hari"),
+        (365, 9999,"365+ hari"),
+    ]
+    recency_dist = []
+    for lo, hi, label in recency_buckets:
+        count = db.query(CustomerCluster).filter(
+            CustomerCluster.recency >= lo,
+            CustomerCluster.recency < hi
+        ).count()
+        recency_dist.append({"range": label, "count": count})
+
+    return {
+        "summary": {
+            "total_revenue": round(total_revenue, 2),
+            "total_customers": total_customers,
+            "total_orders": int(total_orders),
+            "avg_order_value": round(avg_order_value, 2),
+            "avg_frequency": round(avg_frequency, 1),
+        },
+        "revenue_by_segment": revenue_by_segment,
+        "monetary_distribution": distribution,
+        "recency_distribution": recency_dist,
+        "segment_loyalty": loyal_by_seg,
+    }
 
 
 # ─── TOP 10 CUSTOMERS ────────────────────────────────────────────────────────
@@ -126,22 +227,7 @@ def get_rfm_scatter(
 
 
 # ─── CHURN AI ANALYSIS ────────────────────────────────────────────────────────
-OLLAMA_BASE_URL    = "http://192.168.10.16:11434"
-OLLAMA_MODEL       = "llama3.1:8b"
 MAX_TOKENS_CHURN   = 250
-
-def call_ollama(prompt: str, max_tokens: int = 250) -> str:
-    try:
-        resp = requests.post(
-            f"{OLLAMA_BASE_URL}/api/generate",
-            json={"model": OLLAMA_MODEL, "prompt": prompt, "stream": False,
-                  "options": {"num_predict": max_tokens, "temperature": 0.7}},
-            timeout=120,
-        )
-        resp.raise_for_status()
-        return resp.json().get("response", "").strip()
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Ollama error: {str(e)}")
 
 
 @router.get("/churn-ai")
@@ -171,11 +257,88 @@ Data Churn Risk:
 
 Berikan analisis churn risk dan 3 strategi retensi konkret:"""
 
-    analysis = call_ollama(prompt, max_tokens=MAX_TOKENS_CHURN)
+    analysis = call_ai(prompt, max_tokens=MAX_TOKENS_CHURN)
     return {"analysis": analysis, "total_at_risk": at_risk_cnt, "avg_recency": round(avg_recency, 1)}
 
 
-# ─── MARKET BASKET ANALYSIS ───────────────────────────────────────────────────
+# ─── SALES FORECAST AI ────────────────────────────────────────────────────────
+@router.get("/sales-forecast")
+def get_sales_forecast(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Mengambil agregasi data RFM dan mengirimkannya ke AI untuk
+    menghasilkan proyeksi penjualan bulan depan secara naratif.
+    """
+    total          = db.query(CustomerCluster).count()
+    total_revenue  = db.query(func.sum(CustomerCluster.monetary)).scalar() or 0
+    avg_monetary   = db.query(func.avg(CustomerCluster.monetary)).scalar() or 0
+    avg_recency    = db.query(func.avg(CustomerCluster.recency)).scalar() or 0
+    avg_frequency  = db.query(func.avg(CustomerCluster.frequency)).scalar() or 0
+    total_orders   = db.query(func.sum(CustomerCluster.frequency)).scalar() or 0
+    loyal_count    = db.query(CustomerCluster).filter(CustomerCluster.cluster == 2).count()
+    pasif_count    = db.query(CustomerCluster).filter(CustomerCluster.cluster == 1).count()
+
+    # Churn risk count (pasif + recency > avg)
+    at_risk = db.query(CustomerCluster).filter(
+        CustomerCluster.cluster == 1,
+        CustomerCluster.recency > avg_recency
+    ).count()
+
+    # Revenue per segment
+    segments = db.query(CustomerCluster.segment).distinct().all()
+    seg_data = []
+    for (seg,) in segments:
+        rev  = db.query(func.sum(CustomerCluster.monetary)).filter(CustomerCluster.segment == seg).scalar() or 0
+        cnt  = db.query(CustomerCluster).filter(CustomerCluster.segment == seg).count()
+        freq = db.query(func.sum(CustomerCluster.frequency)).filter(CustomerCluster.segment == seg).scalar() or 0
+        seg_data.append(f"- {seg}: revenue ${rev:,.0f}, {cnt} pelanggan, {int(freq)} orders")
+
+    seg_summary = "\n".join(seg_data)
+    pct_loyal = round(loyal_count / total * 100, 1) if total else 0
+    pct_churn = round(at_risk / total * 100, 1) if total else 0
+
+    prompt = f"""Kamu adalah NexaBI Sales Forecaster, analis bisnis retail berpengalaman.
+
+ATURAN WAJIB:
+- Bahasa Indonesia, profesional
+- Format Markdown: gunakan ## heading, bullet - , dan **bold**
+- MAKSIMAL 200 kata total
+- Berikan 1 proyeksi angka estimasi revenue bulan depan (range, bukan angka pasti)
+- Berikan 3 faktor pendorong/penghambat yang spesifik
+- Berikan 2 rekomendasi aksi konkret untuk meningkatkan penjualan bulan depan
+- Cantumkan tingkat kepercayaan forecast (Rendah/Sedang/Tinggi) beserta alasannya
+
+DATA HISTORIS PLATFORM NexaBI (Global Superstore):
+- Total pelanggan terdata: {total:,}
+- Pelanggan loyal (aktif): {loyal_count:,} ({pct_loyal}%)
+- Pelanggan pasif: {pasif_count:,}
+- Pelanggan berisiko churn: {at_risk:,} ({pct_churn}% dari total)
+- Total revenue historis: ${total_revenue:,.0f}
+- Rata-rata revenue per pelanggan: ${avg_monetary:,.0f}
+- Rata-rata frekuensi order: {avg_frequency:.1f}x
+- Total order historis: {int(total_orders):,}
+- Rata-rata recency (hari sejak transaksi terakhir): {avg_recency:.0f} hari
+
+Revenue per segmen:
+{seg_summary}
+
+Berikan proyeksi penjualan bulan depan berdasarkan data di atas:"""
+
+    forecast = call_ai(prompt, max_tokens=400)
+    return {
+        "forecast": forecast,
+        "context": {
+            "total_customers": total,
+            "loyal_count": loyal_count,
+            "at_risk_count": at_risk,
+            "total_revenue": round(total_revenue, 2),
+            "avg_monetary": round(avg_monetary, 2),
+        }
+    }
+
+
 @router.get("/market-basket")
 def get_market_basket(
     db: Session = Depends(get_db),

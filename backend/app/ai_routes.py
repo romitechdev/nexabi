@@ -1,19 +1,17 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from pydantic import BaseModel
-import requests
 
 from app.database import get_db
 from app.models import CustomerCluster, User
 from app.auth import get_current_user
+from app.ai_helper import call_ai
 
 router = APIRouter(prefix="/api/analytics", tags=["AI Features"])
 
-OLLAMA_BASE_URL   = "http://192.168.10.16:11434"
-OLLAMA_MODEL      = "llama3.1:8b"
-MAX_TOKENS_INSIGHT = 350   # ~250 kata untuk insight
-MAX_TOKENS_CHAT    = 200   # ~150 kata untuk chat
+MAX_TOKENS_INSIGHT = 350
+MAX_TOKENS_CHAT    = 200
 
 SYSTEM_INSTRUCTION = """Kamu adalah NexaBI Smart Advisor, analis bisnis retail profesional.
 Aturan WAJIB:
@@ -22,33 +20,6 @@ Aturan WAJIB:
 - MAKSIMAL 150 kata total — padat, tajam, tidak bertele-tele
 - Berikan tepat 3 rekomendasi aksi konkret
 - Langsung ke poin, tanpa basa-basi pembuka"""
-
-
-def call_ollama(prompt: str, max_tokens: int = MAX_TOKENS_INSIGHT) -> str:
-    """Kirim prompt ke Ollama dan kembalikan teks jawaban."""
-    try:
-        resp = requests.post(
-            f"{OLLAMA_BASE_URL}/api/generate",
-            json={
-                "model": OLLAMA_MODEL,
-                "prompt": prompt,
-                "stream": False,
-                "options": {
-                    "num_predict": max_tokens,  # hard limit jumlah token
-                    "temperature": 0.7,
-                    "top_p": 0.9,
-                },
-            },
-            timeout=120,
-        )
-        resp.raise_for_status()
-        return resp.json().get("response", "").strip()
-    except requests.exceptions.ConnectionError:
-        raise HTTPException(status_code=503, detail="Tidak bisa terhubung ke Ollama. Pastikan server Ollama berjalan.")
-    except requests.exceptions.Timeout:
-        raise HTTPException(status_code=504, detail="Ollama timeout. Coba lagi beberapa saat.")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Gagal memproses AI: {str(e)}")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -96,7 +67,7 @@ def get_ai_insight(
 """
 
     prompt = f"{SYSTEM_INSTRUCTION}\n\n{context}\n\nBerikan analisis singkat (maks 150 kata) dan 3 rekomendasi strategis:"
-    insight = call_ollama(prompt, max_tokens=MAX_TOKENS_INSIGHT)
+    insight = call_ai(prompt, max_tokens=MAX_TOKENS_INSIGHT)
     return {"insight": insight}
 
 
@@ -143,5 +114,5 @@ Pertanyaan: {req.message}
 
 Jawab singkat maksimal 100 kata, ramah, dan langsung ke solusi."""
 
-    reply = call_ollama(prompt, max_tokens=MAX_TOKENS_CHAT)
+    reply = call_ai(prompt, max_tokens=MAX_TOKENS_CHAT)
     return {"reply": reply}

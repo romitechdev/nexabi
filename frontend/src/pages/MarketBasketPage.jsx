@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Network, Sparkles, Tag, ArrowRight, PackageOpen, AlertTriangle } from 'lucide-react';
+import { Network, Sparkles, Tag, ArrowRight, PackageOpen } from 'lucide-react';
 import api from '../api/axios';
 
 export default function MarketBasketPage() {
@@ -17,19 +17,7 @@ export default function MarketBasketPage() {
     <div className="p-6 space-y-6 max-w-7xl animate-fade-in">
       <div>
         <h1 className="text-2xl font-bold text-white">Market Basket Analysis</h1>
-        <p className="text-muted text-sm mt-1">Rekomendasi bundling produk berdasarkan algoritma Apriori / Association Rules.</p>
-      </div>
-
-      {/* Disclaimer Alert */}
-      <div className="rounded-xl p-4 flex items-start gap-3 border" 
-        style={{ background: 'rgba(245,158,11,0.1)', borderColor: 'rgba(245,158,11,0.2)' }}>
-        <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
-        <div>
-          <h3 className="text-sm font-semibold text-amber-500">Dalam Tahap Pemrosesan</h3>
-          <p className="text-xs text-amber-500/80 mt-1">
-            Disclaimer: Algoritma Machine Learning untuk Market Basket Analysis pada dataset Global Superstore saat ini masih dalam tahap pemrosesan oleh tim ML. Data yang ditampilkan di bawah ini adalah data simulasi (sampel) untuk keperluan demonstrasi UI/UX.
-          </p>
-        </div>
+        <p className="text-muted text-sm mt-1">Rekomendasi bundling produk berdasarkan algoritma Apriori pada dataset Global Superstore (12.778 transaksi).</p>
       </div>
 
       {/* Hero Card */}

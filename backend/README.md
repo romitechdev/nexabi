@@ -28,8 +28,10 @@ NexaBI Backend adalah service REST API yang:
 - Login user dengan OAuth2 password flow
 - Proteksi endpoint menggunakan JWT
 - Ringkasan analytics cluster customer
+- Analisis Market Basket (Association Rules Apriori)
+- Fitur AI (Insight, Churn Risk AI, Sales Forecast, Chatbot)
 - List, tambah, ubah, dan hapus data customer
-- Auto seed data dari `df_kmeans.csv`
+- Auto seed data dari `df_kmeans.csv` dan `association_rules.csv`
 - Konfigurasi melalui environment variables
 
 ## Struktur Project
@@ -170,72 +172,42 @@ ReDoc tersedia di:
 
 - `http://localhost:5000/redoc`
 
-## Endpoint API
+## Endpoint API Lengkap
 
 ### Authentication
-
-#### `POST /api/auth/register`
-Mendaftarkan user baru.
-
-Contoh body:
-
-```json
-{
-  "username": "adminuser",
-  "password": "password123"
-}
-```
-
-#### `POST /api/auth/login`
-Login menggunakan form data OAuth2.
-
-Field:
-
-- `username`
-- `password`
-
-Response:
-
-```json
-{
-  "access_token": "<jwt-token>",
-  "token_type": "bearer"
-}
-```
+| Method | Endpoint | Deskripsi |
+|---|---|---|
+| POST | `/api/auth/register` | Registrasi user baru |
+| POST | `/api/auth/login` | Login, return JWT token |
 
 ### Analytics
+| Method | Endpoint | Deskripsi |
+|---|---|---|
+| GET | `/api/analytics/overview` | KPI ringkasan (total, loyal, pasif, avg monetary) |
+| GET | `/api/analytics/rfm-scatter` | Data scatter plot RFM semua pelanggan |
+| GET | `/api/analytics/segment-stats` | Statistik per segment |
+| GET | `/api/analytics/top-customers` | Top 10 pelanggan by monetary |
+| GET | `/api/analytics/churn-risk` | Daftar pelanggan berisiko churn |
+| GET | `/api/analytics/market-basket` | Association rules Apriori |
+| GET | `/api/analytics/sales-performance` | Revenue, orders, distribusi per segment |
 
-#### `GET /api/analytics/overview`
-Menampilkan ringkasan data customer segmentation.
-
-Header:
-
-```http
-Authorization: Bearer <jwt-token>
-```
-
-Response berisi:
-
-- total customers
-- jumlah cluster pasif
-- jumlah cluster loyal
-- rata-rata monetary
+### AI Features
+| Method | Endpoint | Deskripsi |
+|---|---|---|
+| GET | `/api/analytics/ai-insight` | Generate AI insight dari data overview |
+| GET | `/api/analytics/churn-ai` | Analisis churn + strategi retensi AI |
+| GET | `/api/analytics/sales-forecast` | Proyeksi penjualan bulan depan |
+| POST | `/api/analytics/chat` | Chatbot interaktif kontekstual |
 
 ### Customer CRUD
+| Method | Endpoint | Deskripsi |
+|---|---|---|
+| GET | `/api/customers` | List semua customer |
+| POST | `/api/customers` | Tambah customer baru |
+| PUT | `/api/customers/{customer_id}` | Update data customer |
+| DELETE | `/api/customers/{customer_id}` | Hapus customer |
 
-Semua endpoint berikut membutuhkan JWT token.
-
-#### `POST /api/customers`
-Menambahkan customer baru.
-
-#### `GET /api/customers`
-Mengambil seluruh data customer beserta koordinat hasil scaling.
-
-#### `PUT /api/customers/{customer_id}`
-Memperbarui data customer berdasarkan `customer_id`.
-
-#### `DELETE /api/customers/{customer_id}`
-Menghapus data customer berdasarkan `customer_id`.
+> Semua endpoint kecuali auth membutuhkan header: `Authorization: Bearer <token>`
 
 ## Alur Penggunaan API
 

@@ -40,6 +40,14 @@ def on_startup():
     seed_data(CSV_FILE_PATH)
 
 # ENDPOINT AUTENTIKASI (USER MANAGEMENT)
+@app.post("/api/auth/dev-login", tags=["Authentication"])
+def dev_login(db: Session = Depends(get_db)):
+    user = db.query(User).first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="Belum ada user")
+    token = create_access_token(data={"sub": user.username})
+    return {"access_token": token, "token_type": "bearer"}
+
 @app.post("/api/auth/register", status_code=status.HTTP_201_CREATED, tags=["Authentication"])
 def register(user_data: UserCreate, db: Session = Depends(get_db)):
     print(f"Register attempt: username='{user_data.username}' password='{user_data.password}'")

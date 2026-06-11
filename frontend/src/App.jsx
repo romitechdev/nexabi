@@ -9,6 +9,8 @@ import AnalyticsPage from './pages/AnalyticsPage';
 import TopCustomersPage from './pages/TopCustomersPage';
 import ChurnRiskPage from './pages/ChurnRiskPage';
 import MarketBasketPage from './pages/MarketBasketPage';
+import SalesPage from './pages/SalesPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 export default function App() {
   return (
@@ -20,16 +22,19 @@ export default function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<DashboardLayout />}>
             <Route path="/dashboard" element={<OverviewPage />} />
+            <Route path="/dashboard/sales" element={<SalesPage />} />
             <Route path="/dashboard/analytics" element={<AnalyticsPage />} />
             <Route path="/dashboard/top-customers" element={<TopCustomersPage />} />
             <Route path="/dashboard/churn-risk" element={<ChurnRiskPage />} />
             <Route path="/dashboard/market-basket" element={<MarketBasketPage />} />
             <Route path="/dashboard/customers" element={<CustomersPage />} />
+            <Route path="/dashboard/*" element={<Navigate to="/404" replace />} />
           </Route>
         </Route>
 
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/404" element={<NotFoundPage />} />
+        <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
     </BrowserRouter>
   );

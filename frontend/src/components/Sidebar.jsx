@@ -1,11 +1,12 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, Users, BrainCircuit, LogOut, BarChart3,
-  ChevronRight, TrendingUp, Crown, AlertTriangle, PackageOpen
+  ChevronRight, TrendingUp, Crown, AlertTriangle, PackageOpen, DollarSign
 } from 'lucide-react';
 
 const navItems = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Overview', end: true },
+  { to: '/dashboard/sales', icon: DollarSign, label: 'Sales Performance' },
   { to: '/dashboard/analytics', icon: TrendingUp, label: 'Analytics' },
   { to: '/dashboard/market-basket', icon: PackageOpen, label: 'Market Basket' },
   { to: '/dashboard/top-customers', icon: Crown, label: 'Top Customers' },

@@ -1,0 +1,107 @@
+antecedents,consequents,support,confidence,lift
+"Appliances, Fasteners",Art,0.007,0.444,1.81
+"Art, Appliances",Fasteners,0.005,0.217,1.78
+"Binders, Storage",Fasteners,0.018,0.21,1.72
+"Binders, Fasteners",Storage,0.018,0.418,1.61
+"Appliances, Machines",Storage,0.005,0.416,1.61
+"Machines, Paper",Storage,0.008,0.413,1.6
+"Binders, Machines",Storage,0.012,0.402,1.55
+"Copiers, Binders",Art,0.006,0.371,1.51
+"Art, Machines",Fasteners,0.006,0.181,1.48
+"Appliances, Fasteners",Storage,0.006,0.381,1.47
+"Appliances, Fasteners",Binders,0.007,0.444,1.43
+"Copiers, Storage",Art,0.006,0.352,1.43
+"Bookcases, Fasteners",Art,0.006,0.351,1.43
+"Binders, Fasteners",Art,0.015,0.349,1.41
+"Art, Paper",Binders,0.02,0.425,1.37
+"Labels, Fasteners",Art,0.007,0.335,1.36
+"Bookcases, Fasteners",Storage,0.006,0.351,1.35
+"Binders, Paper",Appliances,0.007278,0.135965,1.34993
+"Storage, Supplies",Art,0.006,0.327,1.33
+"Appliances, Storage",Art,0.006965,0.327206,1.321023
+"Envelopes, Storage",Art,0.008,0.322,1.31
+"Machines, Storage",Art,0.006809,0.32342,1.305738
+"Machines, Fasteners",Art,0.008,0.32,1.3
+"Appliances, Machines",Binders,0.005,0.4,1.29
+"Labels, Binders",Art,0.009,0.318,1.29
+"Fasteners, Paper",Binders,0.013,0.399,1.28
+"Appliances, Binders",Paper,0.007278,0.237852,1.27754
+"Paper, Storage",Binders,0.021,0.396,1.27
+"Art, Machines",Storage,0.006809,0.325843,1.262085
+Paper,Binders,0.064,0.394,1.26
+Binders,Paper,0.064,0.204,1.26
+"Bookcases, Binders",Art,0.008,0.305,1.24
+"Furnishings, Storage",Art,0.007,0.306,1.24
+"Labels, Storage",Art,0.009,0.303,1.23
+"Machines, Fasteners",Storage,0.008,0.32,1.23
+"Appliances, Storage",Binders,0.008139,0.382353,1.229418
+"Art, Storage",Machines,0.006809,0.104442,1.227743
+"Machines, Binders",Art,0.009,0.3,1.22
+"Binders, Envelopes",Art,0.009,0.298,1.21
+"Appliances, Paper",Binders,0.007278,0.367589,1.181945
+"Fasteners, Storage",Art,0.008765,0.292428,1.180615
+"Paper, Phones",Binders,0.006,0.364,1.17
+"Appliances, Art",Storage,0.006965,0.301695,1.168553
+"Envelopes, Storage",Binders,0.009,0.362,1.16
+"Phones, Storage",Art,0.007,0.278,1.13
+"Furnishings, Storage",Binders,0.008,0.349,1.12
+Phones,Accessories,0.029,0.271,1.12
+Appliances,Binders,0.021,0.349,1.12
+"Fasteners, Paper",Art,0.009,0.276,1.12
+"Machines, Paper",Binders,0.007,0.35,1.12
+Accessories,Phones,0.029,0.12,1.12
+"Chairs, Storage",Art,0.008,0.274,1.11
+"Labels, Fasteners",Storage,0.006,0.287,1.1
+Art,Binders,0.042,0.169,1.09
+Binders,Art,0.042,0.134,1.09
+Chairs,Tables,0.011,0.159,1.08
+"Art, Fasteners",Binders,0.014,0.336,1.08
+Tables,Chairs,0.011,0.354,1.08
+"Fasteners, Paper",Storage,0.009,0.276,1.06
+Binders,Storage,0.085,0.271,1.05
+"Storage, Supplies",Binders,0.006,0.327,1.05
+Chairs,Furnishings,0.015,0.215,1.04
+Furnishings,Chairs,0.015,0.141,1.04
+Appliances,Art,0.023,0.383,1.04
+"Phones, Storage",Binders,0.008,0.318,1.02
+Machines,Storage,0.033,0.389,1.01
+Storage,Art,0.065,0.248,1.01
+Storage,Machines,0.033,0.128,1.01
+Art,Storage,0.065,0.261,1.01
+Storage,Binders,0.085,0.311,1.0
+Fasteners,Art,0.03,0.246,1.0
+"Paper, Phones",Storage,0.006,0.364,0.99
+"Art, Appliances",Binders,0.007,0.304,0.98
+"Copiers, Art",Storage,0.005,0.357,0.97
+"Labels, Storage",Binders,0.009,0.303,0.97
+Envelopes,Binders,0.023,0.298,0.96
+Fasteners,Storage,0.03,0.248,0.96
+Binders,Envelopes,0.023,0.074,0.96
+"Art, Storage",Fasteners,0.014,0.116,0.95
+"Tables, Storage",Chairs,0.005,0.312,0.95
+Appliances,Storage,0.021,0.349,0.95
+"Binders, Storage",Art,0.02,0.232,0.94
+"Art, Fasteners",Storage,0.014,0.34,0.92
+"Paper, Storage",Art,0.012,0.227,0.92
+"Bookcases, Storage",Binders,0.007,0.285,0.92
+"Binders, Envelopes",Storage,0.01,0.33,0.9
+"Chairs, Storage",Binders,0.008,0.274,0.88
+"Art, Paper",Storage,0.015,0.319,0.87
+"Art, Machines",Binders,0.009,0.271,0.87
+"Art, Binders",Storage,0.02,0.309,0.84
+"Bookcases, Binders",Storage,0.008,0.305,0.83
+Machines,Art,0.017,0.2,0.81
+"Bookcases, Art",Storage,0.007,0.29,0.79
+Machines,Binders,0.02,0.235,0.76
+Labels,Art,0.027,0.278,0.75
+Chairs,Storage,0.02,0.288,0.74
+"Labels, Art",Storage,0.008,0.269,0.73
+Supplies,Storage,0.01,0.283,0.73
+Bookcases,Art,0.02,0.265,0.72
+Labels,Storage,0.025,0.258,0.66
+Bookcases,Storage,0.018,0.239,0.62
+Phones,Binders,0.02,0.187,0.6
+Phones,Storage,0.024,0.224,0.58
+Copiers,Storage,0.012,0.213,0.55
+"Art, Storage",Binders,0.02,0.168,0.54
+Accessories,Storage,0.032,0.134,0.52

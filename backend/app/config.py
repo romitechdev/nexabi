@@ -26,3 +26,6 @@ CORS_ORIGINS = _parse_csv_env(
     "CORS_ORIGINS",
     "http://localhost:3000,http://localhost:5173",
 )
+OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "http://192.168.10.11:8080/v1")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "dummy")
+OPENAI_MODEL = os.getenv("OPENAI_MODEL", "Qwen3.6-MoE-35B-A3B-Q4_K_M")

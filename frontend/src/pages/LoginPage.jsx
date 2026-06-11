@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
-import { Eye, EyeOff, BarChart3, Loader2, AlertCircle } from 'lucide-react';
+import { Eye, EyeOff, BarChart3, Loader2, AlertCircle, Info } from 'lucide-react';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
@@ -9,7 +9,16 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [sessionMsg, setSessionMsg] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const msg = sessionStorage.getItem('nexabi_auth_msg');
+    if (msg) {
+      setSessionMsg(msg);
+      sessionStorage.removeItem('nexabi_auth_msg');
+    }
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -70,6 +79,15 @@ export default function LoginPage() {
           style={{ background: 'rgba(26,29,39,0.8)', borderColor: '#2a2d3a', backdropFilter: 'blur(20px)' }}>
           <h2 className="text-xl font-semibold text-white mb-2">Selamat Datang</h2>
           <p className="text-muted text-sm mb-6">Masuk ke NexaBI Platform</p>
+
+          {/* Session expired notification */}
+          {sessionMsg && (
+            <div className="flex items-center gap-2 px-4 py-3 rounded-xl text-sm mb-5"
+              style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.3)', color: '#fcd34d' }}>
+              <Info className="w-4 h-4 flex-shrink-0" />
+              {sessionMsg}
+            </div>
+          )}
 
           <form onSubmit={handleLogin} className="space-y-5">
             {/* Username */}

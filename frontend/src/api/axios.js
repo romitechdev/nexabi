@@ -25,6 +25,8 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem('nexabi_token');
+      // Simpan pesan di sessionStorage agar LoginPage bisa tampilkan notifikasi
+      sessionStorage.setItem('nexabi_auth_msg', 'Sesi kamu telah berakhir. Silakan login kembali.');
       window.location.href = '/login';
     }
     return Promise.reject(error);

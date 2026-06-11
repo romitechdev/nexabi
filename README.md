@@ -1,137 +1,216 @@
-# NexaBI
+# NexaBI — Next-Generation Business Intelligence Platform
 
-NexaBI adalah aplikasi dashboard analitik customer segmentation dengan backend FastAPI dan frontend React + Vite. Repo ini disiapkan sebagai satu project utuh, jadi backend dan frontend dijalankan dari folder masing-masing.
+Platform analitik bisnis berbasis AI untuk customer analytics dan product recommendation pada industri retail. Dibangun di atas dataset Global Superstore (51.290 transaksi, 2012–2015).
 
-## Struktur
+**Capstone Project — PJK-GM040 | Pijak × IBM SkillsBuild**  
+Tema: *AI for Business Intelligence and Market Insights*
+
+---
+
+## Fitur Utama
+
+| Halaman | Deskripsi |
+|---|---|
+| **Overview** | KPI ringkasan, distribusi cluster Loyal/Pasif, AI Smart Advisor |
+| **Sales Performance** | Revenue per segment, distribusi monetary, recency, pareto kontribusi, AI Sales Forecast |
+| **Analytics** | RFM Scatter Plot, distribusi segment, % loyal, tabel detail RFM |
+| **Market Basket** | Association rules Apriori (106 rules), top bundling ideas |
+| **Top Customers** | Podium top 3 + ranked table 10 pelanggan tertinggi |
+| **Churn Risk** | Monitor pelanggan berisiko churn + AI strategi retensi |
+| **Customers** | CRUD lengkap, search, pagination, export CSV |
+| **AI Chatbot** | Floating chatbot kontekstual di semua halaman dashboard |
+
+---
+
+## Struktur Project
 
 ```text
 .
 ├── backend/
 │   ├── app/
-│   ├── df_kmeans.csv
+│   │   ├── ai_helper.py       # OpenAI-compatible AI client
+│   │   ├── ai_routes.py       # Endpoint AI: insight, chat, forecast
+│   │   ├── analytics_routes.py # Endpoint analytics extended
+│   │   ├── auth.py
+│   │   ├── config.py
+│   │   ├── database.py
+│   │   ├── main.py
+│   │   ├── models.py
+│   │   ├── schemas.py
+│   │   └── seeder.py
+│   ├── df_kmeans.csv              # Data RFM hasil K-Means (1.590 pelanggan)
+│   ├── association_rules.csv      # 106 association rules hasil Apriori
+│   ├── Market Basket Analysis (Apriori).ipynb
 │   ├── docker-compose.yml
 │   ├── Dockerfile
 │   ├── requirements.txt
 │   └── .env
 └── frontend/
     ├── src/
+    │   ├── pages/             # 9 halaman dashboard
+    │   ├── components/        # Sidebar, ChatbotWidget, dll
+    │   ├── layouts/
+    │   └── api/axios.js       # Axios + JWT interceptor
     ├── package.json
     └── vite.config.js
 ```
 
+---
+
 ## Prasyarat
 
-- Python 3.11 atau lebih baru
-- Node.js 20 atau lebih baru
-- PostgreSQL 15 jika menjalankan backend tanpa Docker
-- Docker dan Docker Compose jika ingin menjalankan semua service lewat container
+- Docker & Docker Compose (direkomendasikan)
+- Atau: Python 3.10+, Node.js 20+, PostgreSQL 15
 
-## File Environment
+---
 
-File `backend/.env` sudah disiapkan di workspace untuk keperluan lokal dan tidak akan ikut ter-push karena sudah di-ignore.
+## Jalankan dengan Docker (Direkomendasikan)
 
-Jika ingin frontend mengarah ke backend lokal, buat file `frontend/.env` dengan isi:
-
-```env
-VITE_API_BASE_URL=http://localhost:5000/api
-```
-
-## Jalankan Dengan Docker
-
-Backend memakai `backend/docker-compose.yml` dan mengharuskan network eksternal `nexabi_shared_net` sudah ada.
-
-### 1. Siapkan network Docker
+### 1. Buat network Docker
 
 ```bash
 docker network create nexabi_shared_net
 ```
 
-### 2. Jalankan backend
+### 2. Jalankan backend (FastAPI + PostgreSQL)
 
 ```bash
 cd backend
-docker compose up --build
+docker compose up --build -d
 ```
 
-Backend akan tersedia di `http://localhost:5000` dan dokumentasi Swagger di `http://localhost:5000/docs`.
+Backend tersedia di `http://localhost:5000`  
+Swagger docs: `http://localhost:5000/docs`
 
-### 3. Jalankan frontend
+### 3. Jalankan frontend (React + Nginx)
 
 ```bash
 cd frontend
-npm install
-npm run dev
+docker compose up --build -d
 ```
 
-Frontend akan berjalan di `http://localhost:5173`.
+Frontend tersedia di `http://localhost:3000`
+
+---
 
 ## Jalankan Tanpa Docker
 
-### 1. Backend
-
-Masuk ke folder backend, lalu install dependency:
+### Backend
 
 ```bash
 cd backend
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-```
-
-Pastikan file `.env` sudah ada di folder backend. Contoh isi utamanya:
-
-```env
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/nexabi_db
-SECRET_KEY=change-this-secret-before-deploy
-CSV_FILE_PATH=df_kmeans.csv
-CORS_ORIGINS=http://localhost:5173
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_DB=nexabi_db
-GEMINI_API_KEY=
-```
-
-Jalankan backend:
-
-```bash
+cp .env.example .env   # sesuaikan DATABASE_URL dan SECRET_KEY
 uvicorn app.main:app --host 0.0.0.0 --port 5000 --reload
 ```
 
-### 2. Frontend
-
-Masuk ke folder frontend dan install dependency:
+### Frontend
 
 ```bash
 cd frontend
 npm install
-```
-
-Jika backend dijalankan secara lokal, buat `frontend/.env` seperti contoh di atas agar frontend memakai API lokal. Setelah itu jalankan:
-
-```bash
+# Buat .env untuk arahkan ke backend lokal:
+echo "VITE_API_BASE_URL=http://localhost:5000/api" > .env
 npm run dev
 ```
 
-## Alur Login dan Akses Aplikasi
+---
 
-1. Buka frontend di browser.
-2. Registrasi akun baru atau login menggunakan akun yang sudah ada.
-3. Setelah login, aplikasi akan menyimpan token JWT di browser.
-4. Dashboard, analytics, customer list, dan fitur lain akan memakai token tersebut secara otomatis.
+## Environment Variables (backend/.env)
 
-## Endpoint Penting Backend
+| Variable | Keterangan |
+|---|---|
+| `DATABASE_URL` | Koneksi PostgreSQL |
+| `SECRET_KEY` | Secret untuk signing JWT |
+| `CSV_FILE_PATH` | Path file CSV data RFM (default: `df_kmeans.csv`) |
+| `CORS_ORIGINS` | Origin frontend yang diizinkan (pisah koma) |
+| `OPENAI_BASE_URL` | Base URL OpenAI-compatible API untuk AI features |
+| `OPENAI_API_KEY` | API key untuk AI service |
+| `OPENAI_MODEL` | Nama model yang digunakan |
+| `GEMINI_API_KEY` | (Opsional) Gemini API key |
 
-- `POST /api/auth/register`
-- `POST /api/auth/login`
-- `GET /api/analytics/overview`
-- `GET /api/customers`
-- `POST /api/customers`
-- `PUT /api/customers/{customer_id}`
-- `DELETE /api/customers/{customer_id}`
+---
 
-## Catatan Penting
+## Endpoint API Lengkap
 
-- Jangan commit file `.env` ke GitHub.
-- Jika mengubah `SECRET_KEY`, gunakan nilai yang kuat untuk production.
-- Jika frontend dan backend berjalan di host berbeda, sesuaikan `CORS_ORIGINS`.
-- Jika ingin memakai API backend lokal dari frontend, pastikan `VITE_API_BASE_URL` diarahkan ke `http://localhost:5000/api`.
+### Authentication
+| Method | Endpoint | Deskripsi |
+|---|---|---|
+| POST | `/api/auth/register` | Registrasi user baru |
+| POST | `/api/auth/login` | Login, return JWT token |
+
+### Analytics
+| Method | Endpoint | Deskripsi |
+|---|---|---|
+| GET | `/api/analytics/overview` | KPI ringkasan (total, loyal, pasif, avg monetary) |
+| GET | `/api/analytics/rfm-scatter` | Data scatter plot RFM semua pelanggan |
+| GET | `/api/analytics/segment-stats` | Statistik per segment |
+| GET | `/api/analytics/top-customers` | Top 10 pelanggan by monetary |
+| GET | `/api/analytics/churn-risk` | Daftar pelanggan berisiko churn |
+| GET | `/api/analytics/market-basket` | Association rules Apriori |
+| GET | `/api/analytics/sales-performance` | Revenue, orders, distribusi per segment |
+
+### AI Features
+| Method | Endpoint | Deskripsi |
+|---|---|---|
+| GET | `/api/analytics/ai-insight` | Generate AI insight dari data overview |
+| GET | `/api/analytics/churn-ai` | Analisis churn + strategi retensi AI |
+| GET | `/api/analytics/sales-forecast` | Proyeksi penjualan bulan depan |
+| POST | `/api/analytics/chat` | Chatbot interaktif kontekstual |
+
+### Customer CRUD
+| Method | Endpoint | Deskripsi |
+|---|---|---|
+| GET | `/api/customers` | List semua customer |
+| POST | `/api/customers` | Tambah customer baru |
+| PUT | `/api/customers/{customer_id}` | Update data customer |
+| DELETE | `/api/customers/{customer_id}` | Hapus customer |
+
+> Semua endpoint kecuali auth membutuhkan header: `Authorization: Bearer <token>`
+
+---
+
+## Auto-Start dengan Systemd (VPS/VM)
+
+```bash
+sudo cp backend/nexabi-backend.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now nexabi-backend
+```
+
+---
+
+## Tech Stack
+
+| Layer | Teknologi |
+|---|---|
+| Frontend | React 19, Vite, Tailwind CSS, Recharts, Lucide |
+| Backend | FastAPI, SQLAlchemy, Pydantic, Uvicorn |
+| Database | PostgreSQL 15 |
+| ML | Scikit-learn (K-Means), MLxtend (Apriori) |
+| AI | OpenAI-compatible API (Qwen/LLM) |
+| DevOps | Docker, Docker Compose, Nginx, Systemd |
+
+---
+
+## Dataset
+
+**Global Superstore Sales Dataset** — Kaggle (CC0: Public Domain)  
+51.290 baris, 24 kolom, periode 2012–2015  
+[kaggle.com/datasets/apoorvaappz/global-super-store-dataset](https://kaggle.com/datasets/apoorvaappz/global-super-store-dataset)
+
+---
+
+## Tim
+
+**ID Tim:** PJK-GM040 | Pijak × IBM SkillsBuild
+
+| Nama | Learning Path | Tanggung Jawab |
+|---|---|---|
+| Michael Sanjaya | Machine Learning | Data collection, cleaning, EDA, preprocessing pipeline |
+| Irisaliya Irhabiyah Banat | Machine Learning | Feature engineering, K-Means clustering, Apriori MBA, evaluasi model |
+| Muhromin | Backend | REST API, database, autentikasi |
+| Ahmad Fauzul Adhim | Frontend | UI/UX dashboard, chart interaktif, responsivitas |
+| Muhammad Daffa Amrullah | DevOps | CI/CD, Docker, deploy cloud, dokumentasi teknis |

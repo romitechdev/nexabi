@@ -17,17 +17,6 @@ services:
     env_file:
       - .env
 
-  cloudflared:
-    image: cloudflare/cloudflared:latest
-    restart: unless-stopped
-    depends_on:
-      - web
-    env_file:
-      - .env
-    entrypoint: ["/bin/sh", "-c"]
-    command: >-
-      exec cloudflared tunnel run --token "$$CLOUDFLARE_TUNNEL_TOKEN"
-
 volumes:
   postgres_data:
 
