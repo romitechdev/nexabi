@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0f1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a0a2e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#863bff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#47bfff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#863bff;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#47bfff;stop-opacity:0.1" />
+    </linearGradient>
+    <filter id="blur">
+      <feGaussianBlur stdDeviation="40" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)" />
+
+  <!-- Glow blobs -->
+  <circle cx="200" cy="150" r="250" fill="#863bff" opacity="0.12" filter="url(#blur)" />
+  <circle cx="1050" cy="480" r="200" fill="#47bfff" opacity="0.10" filter="url(#blur)" />
+
+  <!-- Grid lines -->
+  <g stroke="#ffffff" stroke-opacity="0.04" stroke-width="1">
+    <line x1="0" y1="105" x2="1200" y2="105" />
+    <line x1="0" y1="210" x2="1200" y2="210" />
+    <line x1="0" y1="315" x2="1200" y2="315" />
+    <line x1="0" y1="420" x2="1200" y2="420" />
+    <line x1="0" y1="525" x2="1200" y2="525" />
+    <line x1="200" y1="0" x2="200" y2="630" />
+    <line x1="400" y1="0" x2="400" y2="630" />
+    <line x1="600" y1="0" x2="600" y2="630" />
+    <line x1="800" y1="0" x2="800" y2="630" />
+    <line x1="1000" y1="0" x2="1000" y2="630" />
+  </g>
+
+  <!-- Accent bar top -->
+  <rect width="1200" height="4" fill="url(#accent)" />
+
+  <!-- Logo icon (lightning bolt shape) -->
+  <g transform="translate(96, 200) scale(2.2)">
+    <path fill="url(#accent)" d="M25.946 44.938c-.664.845-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.287c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.497 0-3.578-1.842-3.578H1.237c-.92 0-1.456-1.04-.92-1.788L10.013.474c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.579 1.842 3.579h11.377c.943 0 1.473 1.088.89 1.83L25.947 44.94z"/>
+  </g>
+
+  <!-- Brand name -->
+  <text x="220" y="265" font-family="'Segoe UI', system-ui, sans-serif" font-size="80" font-weight="700" fill="white" letter-spacing="-2">Nexa<tspan fill="url(#accent)">BI</tspan></text>
+
+  <!-- Tagline -->
+  <text x="220" y="330" font-family="'Segoe UI', system-ui, sans-serif" font-size="28" fill="#a78bfa" font-weight="400" letter-spacing="0.5">Business Intelligence Dashboard</text>
+
+  <!-- Description -->
+  <text x="220" y="390" font-family="'Segoe UI', system-ui, sans-serif" font-size="22" fill="#94a3b8" font-weight="300">Analisis pelanggan berbasis RFM &amp; K-Means dengan AI Gemini</text>
+
+  <!-- Feature badges -->
+  <g transform="translate(220, 430)">
+    <!-- Badge 1 -->
+    <rect width="160" height="40" rx="20" fill="#863bff" fill-opacity="0.2" stroke="#863bff" stroke-opacity="0.5" stroke-width="1"/>
+    <text x="80" y="26" font-family="'Segoe UI', system-ui, sans-serif" font-size="16" fill="#c4b5fd" text-anchor="middle">RFM Analysis</text>
+    <!-- Badge 2 -->
+    <rect x="175" width="160" height="40" rx="20" fill="#863bff" fill-opacity="0.2" stroke="#863bff" stroke-opacity="0.5" stroke-width="1"/>
+    <text x="255" y="26" font-family="'Segoe UI', system-ui, sans-serif" font-size="16" fill="#c4b5fd" text-anchor="middle">Churn Prediction</text>
+    <!-- Badge 3 -->
+    <rect x="350" width="180" height="40" rx="20" fill="#47bfff" fill-opacity="0.15" stroke="#47bfff" stroke-opacity="0.4" stroke-width="1"/>
+    <text x="440" y="26" font-family="'Segoe UI', system-ui, sans-serif" font-size="16" fill="#7dd3fc" text-anchor="middle">AI-Powered Insights</text>
+  </g>
+
+  <!-- Decorative chart bars (right side) -->
+  <g transform="translate(820, 150)" opacity="0.6">
+    <rect x="0"   y="280" width="50" height="120" rx="6" fill="url(#accent)" opacity="0.8"/>
+    <rect x="70"  y="200" width="50" height="200" rx="6" fill="url(#accent)" opacity="0.9"/>
+    <rect x="140" y="140" width="50" height="260" rx="6" fill="url(#accent)"/>
+    <rect x="210" y="100" width="50" height="300" rx="6" fill="#47bfff" opacity="0.9"/>
+    <rect x="280" y="160" width="50" height="240" rx="6" fill="url(#accent)" opacity="0.7"/>
+    <!-- Base line -->
+    <line x1="-10" y1="400" x2="340" y2="400" stroke="#ffffff" stroke-opacity="0.2" stroke-width="1"/>
+  </g>
+
+  <!-- URL -->
+  <text x="600" y="600" font-family="'Segoe UI', system-ui, sans-serif" font-size="18" fill="#475569" text-anchor="middle">nexabi.vercel.app</text>
+</svg>
