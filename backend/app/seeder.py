@@ -1,13 +1,24 @@
 from pathlib import Path
 import pandas as pd
 from app.database import SessionLocal, engine
-from app.models import Base, CustomerCluster, AssociationRule
+from app.models import Base, CustomerCluster, AssociationRule, User
+from app.auth import get_password_hash
 
 def seed_data(csv_file_path: str):
     csv_path = Path(csv_file_path)
     Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     try:
+        # Seed default admin user if no users exist
+        if db.query(User).count() == 0:
+            admin = User(
+                username="admin",
+                hashed_password=get_password_hash("admin123")
+            )
+            db.add(admin)
+            db.commit()
+            print("Default admin user created (username: admin, password: admin123)")
+
         # Seed CustomerCluster if empty
         if db.query(CustomerCluster).first() is None:
             if not csv_path.exists():
