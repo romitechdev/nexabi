@@ -95,17 +95,17 @@ export default function SalesPage() {
   }));
 
   return (
-    <div className="p-6 space-y-6 max-w-7xl animate-fade-in">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 max-w-7xl animate-fade-in">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white">Sales Performance</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-white">Sales Performance</h1>
         <p className="text-muted text-sm mt-1">
           Performa revenue, distribusi transaksi, dan top pelanggan — Global Superstore
         </p>
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
         <StatBox
           icon={DollarSign} title="Total Revenue"
           value={summary ? `$${fmtShort(summary.total_revenue)}` : '—'}
@@ -133,22 +133,22 @@ export default function SalesPage() {
       </div>
 
       {/* Revenue per Segment (Bar) + Avg Order Value per Segment (ComposedChart) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
         {/* Total Revenue per Segment */}
-        <div className="rounded-2xl border p-5" style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
+        <div className="rounded-2xl border p-4 sm:p-5" style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
           <div className="flex items-center gap-2 mb-1">
-            <BarChart2 className="w-5 h-5 text-indigo-400" />
-            <h2 className="text-white font-semibold">Total Revenue per Segment</h2>
+            <BarChart2 className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-400" />
+            <h2 className="text-white font-semibold text-sm sm:text-base">Total Revenue per Segment</h2>
           </div>
-          <p className="text-muted text-xs mb-5">Akumulasi revenue (USD) tiap segmen pelanggan</p>
+          <p className="text-muted text-xs mb-4 sm:mb-5">Akumulasi revenue (USD) tiap segmen pelanggan</p>
           {loading ? (
-            <div className="h-52 animate-pulse rounded-xl" style={{ background: '#2a2d3a' }} />
+            <div className="h-44 animate-pulse rounded-xl" style={{ background: '#2a2d3a' }} />
           ) : (
-            <ResponsiveContainer width="100%" height={220}>
+            <ResponsiveContainer width="100%" height={180}>
               <BarChart data={segChart} barCategoryGap="35%">
                 <CartesianGrid strokeDasharray="3 3" stroke="#2a2d3a" vertical={false} />
-                <XAxis dataKey="segment" tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} />
-                <YAxis tickFormatter={v => `$${fmtShort(v)}`} tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} />
+                <XAxis dataKey="segment" tick={{ fill: '#cbd5e1', fontSize: 10 }} axisLine={false} tickLine={false} />
+                <YAxis tickFormatter={v => `$${fmtShort(v)}`} tick={{ fill: '#cbd5e1', fontSize: 10 }} axisLine={false} tickLine={false} />
                 <Tooltip content={<CustomTooltip />} />
                 <Bar dataKey="total_revenue" name="Revenue ($)" radius={[6, 6, 0, 0]}>
                   {segChart.map((_, i) => <Cell key={i} fill={SEG_COLORS[i % SEG_COLORS.length]} />)}
@@ -159,20 +159,20 @@ export default function SalesPage() {
         </div>
 
         {/* Orders per Segment */}
-        <div className="rounded-2xl border p-5" style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
+        <div className="rounded-2xl border p-4 sm:p-5" style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
           <div className="flex items-center gap-2 mb-1">
-            <ShoppingCart className="w-5 h-5 text-emerald-400" />
-            <h2 className="text-white font-semibold">Total Orders per Segment</h2>
+            <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" />
+            <h2 className="text-white font-semibold text-sm sm:text-base">Total Orders per Segment</h2>
           </div>
-          <p className="text-muted text-xs mb-5">Jumlah total transaksi yang dilakukan tiap segmen pelanggan</p>
+          <p className="text-muted text-xs mb-4 sm:mb-5">Jumlah total transaksi yang dilakukan tiap segmen pelanggan</p>
           {loading ? (
-            <div className="h-52 animate-pulse rounded-xl" style={{ background: '#2a2d3a' }} />
+            <div className="h-44 animate-pulse rounded-xl" style={{ background: '#2a2d3a' }} />
           ) : (
-            <ResponsiveContainer width="100%" height={220}>
+            <ResponsiveContainer width="100%" height={180}>
               <BarChart data={segChart} barCategoryGap="35%">
                 <CartesianGrid strokeDasharray="3 3" stroke="#2a2d3a" vertical={false} />
-                <XAxis dataKey="segment" tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={v => v.toLocaleString()} />
+                <XAxis dataKey="segment" tick={{ fill: '#cbd5e1', fontSize: 10 }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fill: '#cbd5e1', fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={v => v.toLocaleString()} />
                 <Tooltip content={<CustomTooltip />} />
                 <Bar dataKey="total_orders" name="Total Orders" radius={[6, 6, 0, 0]}>
                   {segChart.map((_, i) => <Cell key={i} fill={['#10b981', '#34d399', '#6ee7b7'][i] || '#10b981'} />)}
@@ -184,21 +184,21 @@ export default function SalesPage() {
       </div>
 
       {/* Monetary Distribution + Recency Distribution */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <div className="rounded-2xl border p-5" style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
+        <div className="rounded-2xl border p-4 sm:p-5" style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
           <div className="flex items-center gap-2 mb-1">
-            <DollarSign className="w-5 h-5 text-indigo-400" />
-            <h2 className="text-white font-semibold">Distribusi Revenue per Pelanggan</h2>
+            <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-400" />
+            <h2 className="text-white font-semibold text-sm sm:text-base">Distribusi Revenue per Pelanggan</h2>
           </div>
-          <p className="text-muted text-xs mb-5">Sebaran nilai transaksi kumulatif per pelanggan (USD)</p>
+          <p className="text-muted text-xs mb-4 sm:mb-5">Sebaran nilai transaksi kumulatif per pelanggan (USD)</p>
           {loading ? (
-            <div className="h-48 animate-pulse rounded-xl" style={{ background: '#2a2d3a' }} />
+            <div className="h-40 animate-pulse rounded-xl" style={{ background: '#2a2d3a' }} />
           ) : (
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={moneyDist} barCategoryGap="25%">
                 <CartesianGrid strokeDasharray="3 3" stroke="#2a2d3a" vertical={false} />
-                <XAxis dataKey="range" tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} />
+                <XAxis dataKey="range" tick={{ fill: '#cbd5e1', fontSize: 11 }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fill: '#cbd5e1', fontSize: 11 }} axisLine={false} tickLine={false} />
                 <Tooltip content={<CustomTooltip />} />
                 <Bar dataKey="count" name="Pelanggan" radius={[5, 5, 0, 0]}>
                   {moneyDist.map((_, i) => <Cell key={i} fill={DIST_COLORS[i % DIST_COLORS.length]} />)}
@@ -208,20 +208,20 @@ export default function SalesPage() {
           )}
         </div>
 
-        <div className="rounded-2xl border p-5" style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
+        <div className="rounded-2xl border p-4 sm:p-5" style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
           <div className="flex items-center gap-2 mb-1">
-            <TrendingUp className="w-5 h-5 text-emerald-400" />
-            <h2 className="text-white font-semibold">Distribusi Recency Pelanggan</h2>
+            <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" />
+            <h2 className="text-white font-semibold text-sm sm:text-base">Distribusi Recency Pelanggan</h2>
           </div>
-          <p className="text-muted text-xs mb-5">Hari sejak transaksi terakhir — semakin kecil semakin aktif</p>
+          <p className="text-muted text-xs mb-4 sm:mb-5">Hari sejak transaksi terakhir — semakin kecil semakin aktif</p>
           {loading ? (
-            <div className="h-48 animate-pulse rounded-xl" style={{ background: '#2a2d3a' }} />
+            <div className="h-40 animate-pulse rounded-xl" style={{ background: '#2a2d3a' }} />
           ) : (
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={recencyDist} barCategoryGap="25%">
                 <CartesianGrid strokeDasharray="3 3" stroke="#2a2d3a" vertical={false} />
-                <XAxis dataKey="range" tick={{ fill: '#94a3b8', fontSize: 10 }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} />
+                <XAxis dataKey="range" tick={{ fill: '#cbd5e1', fontSize: 10 }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fill: '#cbd5e1', fontSize: 11 }} axisLine={false} tickLine={false} />
                 <Tooltip content={<CustomTooltip />} />
                 <Bar dataKey="count" name="Pelanggan" radius={[5, 5, 0, 0]}>
                   {recencyDist.map((_, i) => (
@@ -236,12 +236,12 @@ export default function SalesPage() {
 
       {/* Revenue Contribution (Pareto) */}
       <div className="rounded-2xl border overflow-hidden" style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
-        <div className="px-5 py-4 border-b flex items-center gap-2" style={{ borderColor: '#2a2d3a', background: '#13161f' }}>
+        <div className="px-4 sm:px-5 py-3 sm:py-4 border-b flex items-center gap-2" style={{ borderColor: '#2a2d3a', background: '#13161f' }}>
           <TrendingUp className="w-4 h-4 text-indigo-400" />
-          <h2 className="text-white font-semibold">Kontribusi Revenue per Segment</h2>
-          <span className="ml-auto text-xs px-2 py-0.5 rounded" style={{ background: 'rgba(99,102,241,0.12)', color: '#818cf8' }}>Pareto View</span>
+          <h2 className="text-white font-semibold text-sm sm:text-base">Kontribusi Revenue per Segment</h2>
+          <span className="ml-auto text-xs px-2 py-0.5 rounded flex-shrink-0" style={{ background: 'rgba(99,102,241,0.12)', color: '#818cf8' }}>Pareto View</span>
         </div>
-        <div className="p-5">
+        <div className="p-4 sm:p-5">
           {loading ? (
             <div className="h-16 animate-pulse rounded-xl" style={{ background: '#2a2d3a' }} />
           ) : (
@@ -251,8 +251,8 @@ export default function SalesPage() {
                 const cumulative = segRevenue.slice(0, i + 1).reduce((acc, x) => acc + x.total_revenue, 0);
                 const cumulativePct = totalRev > 0 ? (cumulative / totalRev * 100).toFixed(1) : 0;
                 return (
-                  <div key={s.segment} className="flex items-center gap-4">
-                    <div className="w-28 flex-shrink-0">
+                  <div key={s.segment} className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+                    <div className="w-full sm:w-28 flex-shrink-0">
                       <p className="text-white text-sm font-medium">{s.segment}</p>
                       <p className="text-muted text-xs">{s.customer_count} pelanggan</p>
                     </div>
@@ -266,13 +266,15 @@ export default function SalesPage() {
                           style={{ width: `${s.revenue_pct}%`, background: SEG_COLORS[i % SEG_COLORS.length] }} />
                       </div>
                     </div>
-                    <div className="w-24 flex-shrink-0 text-right">
-                      <p className="text-xs text-muted">Kumulatif</p>
-                      <p className="text-sm font-bold text-white">{cumulativePct}%</p>
-                    </div>
-                    <div className="w-20 flex-shrink-0 text-right">
-                      <p className="text-xs text-muted">Avg Order</p>
-                      <p className="text-sm font-semibold text-white">${fmtShort(s.avg_order_value)}</p>
+                    <div className="flex gap-4 sm:gap-0 w-full sm:w-auto">
+                      <div className="w-20 sm:w-24 flex-shrink-0 text-right">
+                        <p className="text-xs text-muted">Kumulatif</p>
+                        <p className="text-sm font-bold text-white">{cumulativePct}%</p>
+                      </div>
+                      <div className="w-20 sm:w-20 flex-shrink-0 text-right">
+                        <p className="text-xs text-muted">Avg Order</p>
+                        <p className="text-sm font-semibold text-white">${fmtShort(s.avg_order_value)}</p>
+                      </div>
                     </div>
                   </div>
                 );
@@ -301,7 +303,7 @@ export default function SalesPage() {
       {/* AI Sales Forecast Panel */}
       <div className="rounded-2xl border overflow-hidden" style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b"
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 sm:px-6 py-4 sm:py-5 border-b gap-3"
           style={{ borderColor: '#2a2d3a', background: 'linear-gradient(135deg, rgba(99,102,241,0.1), rgba(139,92,246,0.1))' }}>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
@@ -309,14 +311,14 @@ export default function SalesPage() {
               <BrainCircuit className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className="text-white font-semibold">AI Sales Forecast</h2>
+              <h2 className="text-white font-semibold text-sm sm:text-base">AI Sales Forecast</h2>
               <p className="text-muted text-xs">Proyeksi penjualan bulan depan berbasis data RFM oleh NexaBI AI</p>
             </div>
           </div>
           <button
             onClick={generateForecast}
             disabled={loadingFC}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-white transition-all hover:opacity-90 disabled:opacity-60"
+            className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-medium text-white transition-all hover:opacity-90 disabled:opacity-60 flex-shrink-0"
             style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}
           >
             {loadingFC
@@ -328,7 +330,7 @@ export default function SalesPage() {
 
         {/* Context chips */}
         {fcContext && !loadingFC && (
-          <div className="flex flex-wrap gap-2 px-6 pt-4">
+          <div className="flex flex-wrap gap-2 px-4 sm:px-6 pt-4">
             {[
               { label: 'Total Customers', value: fcContext.total_customers.toLocaleString('id-ID'), color: '#818cf8' },
               { label: 'Loyal',           value: fcContext.loyal_count.toLocaleString('id-ID'),    color: '#34d399' },
@@ -346,7 +348,7 @@ export default function SalesPage() {
         )}
 
         {/* Body */}
-        <div className="px-6 py-5">
+        <div className="px-4 sm:px-6 py-4 sm:py-5">
           {!forecast && !loadingFC && !fcError && (
             <div className="text-center py-10">
               <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"

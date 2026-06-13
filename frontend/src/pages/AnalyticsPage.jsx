@@ -58,21 +58,21 @@ export default function AnalyticsPage() {
   }));
 
   return (
-    <div className="p-6 space-y-6 max-w-7xl">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 max-w-7xl">
       <div>
-        <h1 className="text-2xl font-bold text-white">Analytics</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-white">Analytics</h1>
         <p className="text-muted text-sm mt-1">Visualisasi distribusi RFM dan segmentasi klaster pelanggan</p>
       </div>
 
       {/* RFM Scatter Plot */}
-      <div className="rounded-2xl border p-5" style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
+      <div className="rounded-2xl border p-4 sm:p-5" style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
         <div className="flex items-center gap-2 mb-1">
-          <Activity className="w-5 h-5" style={{ color: '#818cf8' }} />
-          <h2 className="text-white font-semibold">RFM Cluster Scatter Plot</h2>
+          <Activity className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: '#818cf8' }} />
+          <h2 className="text-white font-semibold text-sm sm:text-base">RFM Cluster Scatter Plot</h2>
         </div>
-        <p className="text-muted text-xs mb-5">Recency (X) vs Frequency (Y) — Semua {scatter.length} pelanggan</p>
+        <p className="text-muted text-xs mb-4">Recency (X) vs Frequency (Y) — Semua {scatter.length} pelanggan</p>
 
-        <div className="flex gap-4 mb-3">
+        <div className="flex gap-3 sm:gap-4 mb-3">
           {[{ label: 'Loyal', color: '#10b981' }, { label: 'Pasif', color: '#ef4444' }].map(c => (
             <div key={c.label} className="flex items-center gap-1.5">
               <span className="w-3 h-3 rounded-full" style={{ background: c.color }} />
@@ -82,13 +82,13 @@ export default function AnalyticsPage() {
         </div>
 
         {loading ? (
-          <div className="h-64 animate-pulse rounded-xl" style={{ background: '#2a2d3a' }} />
+          <div className="h-48 sm:h-64 animate-pulse rounded-xl" style={{ background: '#2a2d3a' }} />
         ) : (
-          <ResponsiveContainer width="100%" height={280}>
+          <ResponsiveContainer width="100%" height={240}>
             <ScatterChart>
               <CartesianGrid strokeDasharray="3 3" stroke="#2a2d3a" />
-              <XAxis dataKey="x" name="Recency" tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} label={{ value: 'Recency (scaled)', fill: '#94a3b8', fontSize: 11, position: 'insideBottom', offset: -2 }} />
-              <YAxis dataKey="y" name="Frequency" tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} label={{ value: 'Frequency', fill: '#94a3b8', fontSize: 11, angle: -90, position: 'insideLeft' }} />
+              <XAxis dataKey="x" name="Recency" tick={{ fill: '#cbd5e1', fontSize: 10 }} axisLine={false} tickLine={false} label={{ value: 'Recency (scaled)', fill: '#cbd5e1', fontSize: 10, position: 'insideBottom', offset: -2 }} />
+              <YAxis dataKey="y" name="Frequency" tick={{ fill: '#cbd5e1', fontSize: 10 }} axisLine={false} tickLine={false} label={{ value: 'Frequency', fill: '#cbd5e1', fontSize: 10, angle: -90, position: 'insideLeft' }} />
               <Tooltip content={<CustomTooltipScatter />} />
               <Scatter name="Loyal" data={loyal} fill="#10b981" opacity={0.7} r={4} />
               <Scatter name="Pasif" data={pasif} fill="#ef4444" opacity={0.7} r={4} />
@@ -98,19 +98,19 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Pie + Radar row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
         {/* Donut Pie */}
-        <div className="rounded-2xl border p-5" style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
-          <div className="flex items-center gap-2 mb-4">
-            <Users className="w-5 h-5" style={{ color: '#818cf8' }} />
-            <h2 className="text-white font-semibold">Distribusi per Segment</h2>
+        <div className="rounded-2xl border p-4 sm:p-5" style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
+          <div className="flex items-center gap-2 mb-3 sm:mb-4">
+            <Users className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: '#818cf8' }} />
+            <h2 className="text-white font-semibold text-sm sm:text-base">Distribusi per Segment</h2>
           </div>
-          {loading ? <div className="h-52 animate-pulse rounded-xl" style={{ background: '#2a2d3a' }} /> : (
-            <ResponsiveContainer width="100%" height={220}>
+          {loading ? <div className="h-44 sm:h-52 animate-pulse rounded-xl" style={{ background: '#2a2d3a' }} /> : (
+            <ResponsiveContainer width="100%" height={200}>
               <PieChart>
                 <Pie data={pieData} cx="50%" cy="50%" innerRadius={55} outerRadius={85}
                   paddingAngle={4} dataKey="value" label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  labelLine={{ stroke: '#94a3b8' }}>
+                  labelLine={{ stroke: '#cbd5e1' }}>
                   {pieData.map((_, i) => (
                     <Cell key={i} fill={SEGMENT_COLORS[i % SEGMENT_COLORS.length]} />
                   ))}
@@ -122,17 +122,17 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Avg RFM per Segment Bar */}
-        <div className="rounded-2xl border p-5" style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
-          <div className="flex items-center gap-2 mb-4">
-            <TrendingUp className="w-5 h-5" style={{ color: '#818cf8' }} />
-            <h2 className="text-white font-semibold">% Loyal per Segment</h2>
+        <div className="rounded-2xl border p-4 sm:p-5" style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
+          <div className="flex items-center gap-2 mb-3 sm:mb-4">
+            <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: '#818cf8' }} />
+            <h2 className="text-white font-semibold text-sm sm:text-base">% Loyal per Segment</h2>
           </div>
-          {loading ? <div className="h-52 animate-pulse rounded-xl" style={{ background: '#2a2d3a' }} /> : (
-            <ResponsiveContainer width="100%" height={220}>
+          {loading ? <div className="h-44 sm:h-52 animate-pulse rounded-xl" style={{ background: '#2a2d3a' }} /> : (
+            <ResponsiveContainer width="100%" height={200}>
               <BarChart data={segments} barCategoryGap="35%">
                 <CartesianGrid strokeDasharray="3 3" stroke="#2a2d3a" vertical={false} />
-                <XAxis dataKey="segment" tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} unit="%" />
+                <XAxis dataKey="segment" tick={{ fill: '#cbd5e1', fontSize: 11 }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fill: '#cbd5e1', fontSize: 11 }} axisLine={false} tickLine={false} unit="%" />
                 <Tooltip contentStyle={{ background: '#13161f', border: '1px solid #2a2d3a', borderRadius: 12, color: '#f1f5f9', fontSize: 12 }} itemStyle={{ color: '#fff' }}
                   formatter={(v) => [`${v}%`, '% Loyal']} />
                 <Bar dataKey="pct_loyal" radius={[6, 6, 0, 0]}>
@@ -146,8 +146,8 @@ export default function AnalyticsPage() {
 
       {/* Segment detail table */}
       <div className="rounded-2xl border overflow-hidden" style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
-        <div className="px-5 py-4 border-b" style={{ borderColor: '#2a2d3a', background: '#13161f' }}>
-          <h2 className="text-white font-semibold">Detail Statistik per Segment</h2>
+        <div className="px-4 sm:px-5 py-3 sm:py-4 border-b" style={{ borderColor: '#2a2d3a', background: '#13161f' }}>
+          <h2 className="text-white font-semibold text-sm sm:text-base">Detail Statistik per Segment</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">

@@ -52,21 +52,21 @@ export default function RegisterPage() {
         style={{ background: 'radial-gradient(circle, #8b5cf6, transparent)' }} />
 
       {/* Register Card */}
-      <div className="relative z-10 w-full max-w-md mx-4 animate-fade-in">
+      <div className="relative z-10 w-full max-w-md mx-3 sm:mx-4 animate-fade-in">
         {/* Header branding */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4"
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl mb-3 sm:mb-4"
             style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}>
-            <BarChart3 className="w-8 h-8 text-white" />
+            <BarChart3 className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-white tracking-tight">NexaBI</h1>
-          <p className="text-muted mt-1 text-sm">Buat akun untuk mengakses platform</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">NexaBI</h1>
+          <p className="text-muted mt-1 text-xs sm:text-sm">Buat akun untuk mengakses platform</p>
         </div>
 
         {/* Form card */}
-        <div className="rounded-2xl p-8 border"
+        <div className="rounded-2xl p-5 sm:p-8 border"
           style={{ background: 'rgba(26,29,39,0.8)', borderColor: '#2a2d3a', backdropFilter: 'blur(20px)' }}>
-          <h2 className="text-xl font-semibold text-white mb-6">Daftar Akun Baru</h2>
+          <h2 className="text-lg sm:text-xl font-semibold text-white mb-4 sm:mb-6">Daftar Akun Baru</h2>
 
           {success ? (
             <div className="text-center py-6">
@@ -75,7 +75,7 @@ export default function RegisterPage() {
               <p className="text-sm text-muted">Mengarahkan ke halaman login...</p>
             </div>
           ) : (
-            <form onSubmit={handleRegister} className="space-y-5">
+            <form onSubmit={handleRegister} className="space-y-4 sm:space-y-5">
               {/* Username */}
               <div>
                 <label className="block text-sm font-medium text-muted mb-2">Username</label>
@@ -138,7 +138,7 @@ export default function RegisterPage() {
                 id="register-submit"
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 rounded-xl font-semibold text-white text-sm transition-all flex items-center justify-center gap-2 disabled:opacity-60"
+                className="w-full py-2.5 sm:py-3 rounded-xl font-semibold text-white text-sm transition-all flex items-center justify-center gap-2 disabled:opacity-60"
                 style={{ background: loading ? '#4f46e5' : 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}
               >
                 {loading ? (
@@ -149,7 +149,7 @@ export default function RegisterPage() {
               </button>
 
               {/* Login Link */}
-              <div className="text-center mt-4">
+              <div className="text-center mt-3 sm:mt-4">
                 <span className="text-muted text-sm">Sudah punya akun? </span>
                 <button type="button" onClick={goToLogin} className="text-indigo-400 text-sm font-medium hover:text-indigo-300">
                   Masuk di sini

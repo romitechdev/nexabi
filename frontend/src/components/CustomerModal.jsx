@@ -56,12 +56,12 @@ export default function CustomerModal({ mode, customer, onClose, onSuccess }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
       onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="w-full max-w-lg rounded-2xl border animate-slide-up"
+      <div className="w-full max-w-lg sm:max-w-xl rounded-2xl border animate-slide-up max-h-[90vh] flex flex-col"
         style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b" style={{ borderColor: '#2a2d3a' }}>
-          <h3 className="text-lg font-semibold text-white">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-4 sm:py-5 border-b flex-shrink-0" style={{ borderColor: '#2a2d3a' }}>
+          <h3 className="text-base sm:text-lg font-semibold text-white">
             {isDelete ? '🗑️ Hapus Customer' : isEdit ? '✏️ Edit Customer' : '➕ Tambah Customer'}
           </h3>
           <button onClick={onClose} className="text-muted hover:text-white transition-colors p-1 rounded-lg hover:bg-white/5">
@@ -70,7 +70,7 @@ export default function CustomerModal({ mode, customer, onClose, onSuccess }) {
         </div>
 
         {/* Body */}
-        <div className="px-6 py-5">
+        <div className="px-4 sm:px-6 py-4 sm:py-5 overflow-y-auto flex-1">
           {isDelete ? (
             <div>
               <p className="text-gray-300 mb-2">
@@ -95,8 +95,8 @@ export default function CustomerModal({ mode, customer, onClose, onSuccess }) {
               </div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {[
                   { id: 'modal-customer-id', key: 'customer_id', label: 'Customer ID', disabled: isEdit },
                   { id: 'modal-customer-name', key: 'customer_name', label: 'Nama Customer' },

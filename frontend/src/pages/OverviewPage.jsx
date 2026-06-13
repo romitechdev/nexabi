@@ -48,15 +48,15 @@ export default function OverviewPage() {
     new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
 
   return (
-    <div className="p-6 space-y-6 max-w-7xl">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 max-w-7xl">
       {/* Page header */}
       <div>
-        <h1 className="text-2xl font-bold text-white">Overview Dashboard</h1>
-        <p className="text-muted text-sm mt-1">Ringkasan performa & segmentasi pelanggan retail</p>
+        <h1 className="text-xl sm:text-2xl font-bold text-white">Overview Dashboard</h1>
+        <p className="text-muted text-xs sm:text-sm mt-1">Ringkasan performa & segmentasi pelanggan retail</p>
       </div>
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
         <StatCard
           title="Total Pelanggan"
           value={overview ? overview.total_customers.toLocaleString('id-ID') : '—'}
@@ -92,19 +92,19 @@ export default function OverviewPage() {
       </div>
 
       {/* Chart + Summary row */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-3 sm:gap-4">
         {/* Bar Chart */}
-        <div className="lg:col-span-3 rounded-2xl border p-5"
+        <div className="lg:col-span-3 rounded-2xl border p-4 sm:p-5"
           style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
-          <div className="flex items-center gap-2 mb-5">
-            <TrendingUp className="w-5 h-5" style={{ color: '#818cf8' }} />
-            <h2 className="text-white font-semibold">Distribusi Segmen Pelanggan</h2>
+          <div className="flex items-center gap-2 mb-4 sm:mb-5">
+            <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: '#818cf8' }} />
+            <h2 className="text-white font-semibold text-sm sm:text-base">Distribusi Segmen Pelanggan</h2>
           </div>
-          <ResponsiveContainer width="100%" height={220}>
+          <ResponsiveContainer width="100%" height={200}>
             <BarChart data={chartData} barCategoryGap="40%">
               <CartesianGrid strokeDasharray="3 3" stroke="#2a2d3a" vertical={false} />
-              <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 12 }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} axisLine={false} tickLine={false} />
+          <XAxis dataKey="name" tick={{ fill: '#cbd5e1', fontSize: 10 }} axisLine={false} tickLine={false} />
+          <YAxis tick={{ fill: '#cbd5e1', fontSize: 10 }} axisLine={false} tickLine={false} />
               <Tooltip
                 contentStyle={{ background: '#13161f', border: '1px solid #2a2d3a', borderRadius: '12px', color: '#f1f5f9' }}
                 itemStyle={{ color: '#fff' }}
@@ -120,9 +120,9 @@ export default function OverviewPage() {
         </div>
 
         {/* Quick Stats */}
-        <div className="lg:col-span-2 rounded-2xl border p-5 space-y-4"
+        <div className="lg:col-span-2 rounded-2xl border p-4 sm:p-5 space-y-3 sm:space-y-4"
           style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
-          <h2 className="text-white font-semibold">Ringkasan Cepat</h2>
+          <h2 className="text-white font-semibold text-sm sm:text-base">Ringkasan Cepat</h2>
           {loadingOverview ? (
             <div className="space-y-3">
               {[...Array(4)].map((_, i) => (
@@ -152,18 +152,18 @@ export default function OverviewPage() {
       <div className="rounded-2xl border overflow-hidden"
         style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
         {/* Panel header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b"
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 sm:px-6 py-4 sm:py-5 border-b gap-3"
           style={{
             borderColor: '#2a2d3a',
             background: 'linear-gradient(135deg, rgba(99,102,241,0.1), rgba(139,92,246,0.1))',
           }}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
               style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}>
               <BrainCircuit className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className="text-white font-semibold">NexaBI AI Smart Advisor</h2>
+              <h2 className="text-white font-semibold text-sm sm:text-base">NexaBI AI Smart Advisor</h2>
               <p className="text-muted text-xs">Analisis bisnis & rekomendasi berbasis data real-time</p>
             </div>
           </div>
@@ -171,7 +171,7 @@ export default function OverviewPage() {
             id="btn-generate-insight"
             onClick={fetchInsight}
             disabled={loadingInsight}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-white transition-all hover:opacity-90 disabled:opacity-60"
+            className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-medium text-white transition-all hover:opacity-90 disabled:opacity-60 flex-shrink-0"
             style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}
           >
             {loadingInsight ? (
@@ -183,7 +183,7 @@ export default function OverviewPage() {
         </div>
 
         {/* Panel body */}
-        <div className="px-6 py-5">
+        <div className="px-4 sm:px-6 py-4 sm:py-5">
           {!insight && !loadingInsight && !insightError && (
             <div className="text-center py-10">
               <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"

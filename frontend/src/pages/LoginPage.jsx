@@ -63,22 +63,22 @@ export default function LoginPage() {
         style={{ background: 'radial-gradient(circle, #8b5cf6, transparent)' }} />
 
       {/* Login Card */}
-      <div className="relative z-10 w-full max-w-md mx-4 animate-fade-in">
+      <div className="relative z-10 w-full max-w-md mx-3 sm:mx-4 animate-fade-in">
         {/* Header branding */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4"
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl mb-3 sm:mb-4"
             style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}>
-            <BarChart3 className="w-8 h-8 text-white" />
+            <BarChart3 className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-white tracking-tight">NexaBI</h1>
-          <p className="text-muted mt-1 text-sm">Business Intelligence Dashboard</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">NexaBI</h1>
+          <p className="text-muted mt-1 text-xs sm:text-sm">Business Intelligence Dashboard</p>
         </div>
 
         {/* Form card */}
-        <div className="rounded-2xl p-8 border"
+        <div className="rounded-2xl p-5 sm:p-8 border"
           style={{ background: 'rgba(26,29,39,0.8)', borderColor: '#2a2d3a', backdropFilter: 'blur(20px)' }}>
-          <h2 className="text-xl font-semibold text-white mb-2">Selamat Datang</h2>
-          <p className="text-muted text-sm mb-6">Masuk ke NexaBI Platform</p>
+          <h2 className="text-lg sm:text-xl font-semibold text-white mb-2">Selamat Datang</h2>
+          <p className="text-muted text-xs sm:text-sm mb-4 sm:mb-6">Masuk ke NexaBI Platform</p>
 
           {/* Session expired notification */}
           {sessionMsg && (
@@ -89,7 +89,7 @@ export default function LoginPage() {
             </div>
           )}
 
-          <form onSubmit={handleLogin} className="space-y-5">
+          <form onSubmit={handleLogin} className="space-y-4 sm:space-y-5">
             {/* Username */}
             <div>
               <label className="block text-sm font-medium text-muted mb-2">Username</label>
@@ -151,7 +151,7 @@ export default function LoginPage() {
               id="login-submit"
               type="submit"
               disabled={loading}
-              className="w-full py-3 rounded-xl font-semibold text-white text-sm transition-all flex items-center justify-center gap-2 disabled:opacity-60"
+              className="w-full py-2.5 sm:py-3 rounded-xl font-semibold text-white text-sm transition-all flex items-center justify-center gap-2 disabled:opacity-60"
               style={{ background: loading ? '#4f46e5' : 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}
             >
               {loading ? (
@@ -172,7 +172,7 @@ export default function LoginPage() {
         </div>
 
         <p className="text-center text-muted text-xs mt-6">
-          NexaBI © 2026 ·
+          NexaBI © 2026 · Powered by Gemini AI
         </p>
       </div>
     </div>

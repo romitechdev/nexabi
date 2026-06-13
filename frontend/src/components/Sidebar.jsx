@@ -1,7 +1,7 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import {
-  LayoutDashboard, Users, BrainCircuit, LogOut, BarChart3,
-  ChevronRight, TrendingUp, Crown, AlertTriangle, PackageOpen, DollarSign
+  LayoutDashboard, Users, BrainCircuit, LogOut, BarChart3, ChevronRight, TrendingUp, Crown, AlertTriangle, PackageOpen, DollarSign, X
 } from 'lucide-react';
 
 const navItems = [
@@ -16,6 +16,18 @@ const navItems = [
 
 export default function Sidebar() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    window.__sidebarShouldClose = true;
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (window.__sidebarShouldClose) {
+      window.__sidebarShouldClose = false;
+      window.dispatchEvent(new CustomEvent('sidebar-close'));
+    }
+  }, [window.__sidebarShouldClose]);
 
   const handleLogout = () => {
     localStorage.removeItem('nexabi_token');
@@ -23,8 +35,18 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="flex flex-col w-60 flex-shrink-0 border-r"
+    <aside className="flex flex-col w-60 flex-shrink-0 border-r relative"
       style={{ background: '#13161f', borderColor: '#2a2d3a', minHeight: '100vh' }}>
+
+      {/* Mobile close button */}
+      <button
+        onClick={() => window.dispatchEvent(new CustomEvent('sidebar-close'))}
+        className="lg:hidden absolute top-4 right-3 p-1 rounded text-muted hover:text-white transition-all"
+        style={{ border: '1px solid #2a2d3a' }}
+        aria-label="Close sidebar"
+      >
+        <X className="w-4 h-4" />
+      </button>
 
       {/* Logo */}
       <div className="flex items-center gap-3 px-5 py-6 border-b" style={{ borderColor: '#2a2d3a' }}>

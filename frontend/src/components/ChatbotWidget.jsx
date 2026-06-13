@@ -54,11 +54,10 @@ export default function ChatbotWidget() {
       {open && (
         <div
           id="chatbot-window"
-          className="fixed bottom-24 right-5 z-50 w-80 sm:w-96 rounded-2xl border flex flex-col animate-slide-up overflow-hidden"
+          className="fixed bottom-0 left-0 right-0 z-50 w-full sm:w-80 sm:right-5 sm:left-auto sm:bottom-24 sm:rounded-2xl rounded-t-2xl border flex flex-col animate-slide-up overflow-hidden sm:h-[480px] h-[85vh]"
           style={{
             background: '#1a1d27',
             borderColor: '#2a2d3a',
-            height: '480px',
             boxShadow: '0 25px 50px rgba(0,0,0,0.5)',
           }}
         >
@@ -98,7 +97,7 @@ export default function ChatbotWidget() {
                   </div>
                 )}
                 <div
-                  className={`max-w-[80%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed ${
+                  className={`max-w-[85%] sm:max-w-[80%] px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-2xl text-xs sm:text-sm leading-relaxed ${
                     msg.role === 'user' ? 'rounded-tr-sm' : 'rounded-tl-sm'
                   }`}
                   style={msg.role === 'user'

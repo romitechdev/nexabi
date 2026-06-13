@@ -14,35 +14,35 @@ export default function MarketBasketPage() {
   }, []);
 
   return (
-    <div className="p-6 space-y-6 max-w-7xl animate-fade-in">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 max-w-7xl animate-fade-in">
       <div>
-        <h1 className="text-2xl font-bold text-white">Market Basket Analysis</h1>
-        <p className="text-muted text-sm mt-1">Rekomendasi bundling produk berdasarkan algoritma Apriori pada dataset Global Superstore (12.778 transaksi).</p>
+        <h1 className="text-xl sm:text-2xl font-bold text-white">Market Basket Analysis</h1>
+        <p className="text-muted text-xs sm:text-sm mt-1">Rekomendasi bundling produk berdasarkan algoritma Apriori pada dataset Global Superstore (12.778 transaksi).</p>
       </div>
 
       {/* Hero Card */}
-      <div className="rounded-2xl border p-6 flex flex-col md:flex-row items-center gap-6"
+      <div className="rounded-2xl border p-4 sm:p-6 flex flex-col md:flex-row items-center gap-4 sm:gap-6"
         style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.1), rgba(139,92,246,0.1))', borderColor: 'rgba(99,102,241,0.2)' }}>
-        <div className="w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0"
+        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center flex-shrink-0"
           style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}>
-          <Network className="w-8 h-8 text-white" />
+          <Network className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-indigo-400" />
+          <h2 className="text-lg sm:text-xl font-bold text-white mb-2 flex items-center gap-2">
+            <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-400" />
             Product Recommendation Engine
           </h2>
-          <p className="text-muted text-sm">
+          <p className="text-muted text-xs sm:text-sm">
             Mesin rekomendasi menemukan pola pembelian tersembunyi dari pelanggan ritel.
             Gunakan data di bawah ini untuk membuat paket promosi (bundling) yang optimal dan tingkatkan <i>Cross-Selling</i>!
           </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Bundling Cards */}
         <div className="lg:col-span-1 space-y-4">
-          <h3 className="text-white font-semibold flex items-center gap-2 mb-4">
+          <h3 className="text-white font-semibold flex items-center gap-2 mb-3 sm:mb-4">
             <Tag className="w-4 h-4 text-indigo-400" />
             Top Bundling Ideas
           </h3>
@@ -52,7 +52,7 @@ export default function MarketBasketPage() {
             ))
           ) : (
             rules.slice(0, 3).map((r, i) => (
-              <div key={r.id} className="rounded-2xl border p-5" style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
+              <div key={r.id} className="rounded-2xl border p-4 sm:p-5" style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-bold px-2 py-1 rounded" style={{ background: 'rgba(16,185,129,0.15)', color: '#34d399' }}>
                     Match #{i + 1}
@@ -75,9 +75,9 @@ export default function MarketBasketPage() {
 
         {/* Association Rules Table */}
         <div className="lg:col-span-2 rounded-2xl border overflow-hidden" style={{ background: '#1a1d27', borderColor: '#2a2d3a' }}>
-          <div className="px-5 py-4 border-b flex items-center gap-2" style={{ borderColor: '#2a2d3a', background: '#13161f' }}>
+          <div className="px-4 sm:px-5 py-3 sm:py-4 border-b flex items-center gap-2" style={{ borderColor: '#2a2d3a', background: '#13161f' }}>
             <PackageOpen className="w-4 h-4 text-indigo-400" />
-            <h2 className="text-white font-semibold">Tabel Association Rules (Apriori)</h2>
+            <h2 className="text-white font-semibold text-sm sm:text-base">Tabel Association Rules (Apriori)</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

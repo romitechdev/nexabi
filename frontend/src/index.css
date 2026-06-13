@@ -13,7 +13,7 @@
   --success: #10b981;
   --danger: #ef4444;
   --text-primary: #f1f5f9;
-  --text-muted: #94a3b8;
+  --text-muted: #cbd5e1;
 }
 
 * {
@@ -27,6 +27,21 @@ body {
   background-color: var(--bg-base);
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
+}
+
+/* Force dark text colors — override Tailwind preflight & browser defaults */
+h1, h2, h3, h4, h5, h6 {
+  color: inherit;
+}
+
+/* Tailwind text-white override */
+.text-white {
+  color: #ffffff !important;
+}
+
+/* Tailwind text-muted override */
+.text-muted {
+  color: #cbd5e1 !important;
 }
 
 /* Scrollbar kustom */
@@ -72,6 +87,6 @@ body {
 .markdown-content blockquote {
   border-left: 3px solid #6366f1;
   padding-left: 1rem;
-  color: #94a3b8;
+  color: #cbd5e1;
   margin: 0.75rem 0;
 }

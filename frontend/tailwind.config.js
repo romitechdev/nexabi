@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        base: '#0f1117',
+        app: '#0f1117',
         card: '#1a1d27',
         border: '#2a2d3a',
         accent: {
@@ -19,7 +19,7 @@ export default {
         success: '#10b981',
         danger: '#ef4444',
         warning: '#f59e0b',
-        muted: '#94a3b8',
+        muted: '#cbd5e1',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
